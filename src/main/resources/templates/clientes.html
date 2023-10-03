@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clientes - BackOffice</title>
+        <link rel="stylesheet" type="text/css" href="estoque_geral.css">
+        <link rel="stylesheet" type="text/css" href="colaboradores.css">
+    </head>
+    <body>
+        <div id="topoJanela" class="topoJanela">
+            <div></div>
+            <div>Clientes</div>
+            <div>
+                <img src="imgs/lupa.svg" id="btn_pesq" class="btn_mainoper">
+                <!-- <img src="imgs/listarTudo.svg" id="btn_listarTudo" class="btn_mainoper"> -->
+                <img src="imgs/add.svg" id="button_adicionar" title="Cadastro de novo cliente" class="btn_mainoper">
+            </div>
+        </div>
+
+        <div id="pesquisa" class="popup ocultarPopup"> 
+            <div class="janelaPopup">
+                <div class="tituloPopup">
+                    <div id="tituloPopupPesquisar">Pesquisar</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopupPesq">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+                        <label>Tipo da pesquisa</label>
+                        <div class="campoRadio">
+                            <input type="radio" id="f_pesqId" name="f_pesqTipo" checked>ID
+                        </div>
+                        <div class="campoRadio">
+                            <input type="radio" id="f_pesqNome" name="f_pesqTipo">Nome
+                        </div>
+                    </div> 
+                    <div class="campoForm">
+                        <input type="text" id="f_pesq" name="f_pesq">
+                    </div>
+                </div>
+                <div class="rodapePopup">
+                    <button id="btn_pesquisar" class="btn_comandoPopup">pesquisar</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="novoCliente" class="popup ocultarPopup">
+            <form class="janelaPopup" id="clienteForm" method="POST" action="/api/cliente">
+                <div class="tituloPopup">
+                    <div id="tituloPopup">Novo cliente</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopup">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+                        <label>Nome cliente</label>
+                        <input type="text" id="f_nome" name="nome">
+                    </div>
+                    <div class="campoForm">
+                        <label>Telefone cliente</label>
+                        <input type="text" id="f_email" name="telefone">
+                    </div>      
+                    <div class="campoForm">
+                        <label>Endereço cliente</label>
+                        <input type="text" id="" name="endereco">
+                    </div>       
+                    <div class="campoForm">
+                        <label>Email cliente</label>
+                        <input type="email" id="" name="email">
+                    </div>       
+                    <div class="campoForm">
+                        <label>CPF ou CNPJ cliente</label>
+                        <input type="text" id="" name="doc">
+                    </div>                  
+                    <div class="campoForm">
+                        <label>Tipo cliente</label>
+                        <select id="f_tipoColab" name="f_tipoColab">
+                            <option>Física</option>
+                            <option>Jurídica</option>
+                        </select>
+                    </div>    
+                </div>
+                <div class="rodapePopup">
+                    <button id="btn_gravarPopup" class="btn_comandoPopup">gravar</button>
+                    <button id="btn_cancelarPopup" class="btn_comandoPopup">cancelar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="areaGrid" class="areaGrid">
+            <div id="grid" class="grid">
+                <div id="tituloGrid" class="tituloGrid">
+                    <div class="colunaTituloGrid c1">ID</div>
+                    <div class="colunaTituloGrid c2">Nome</div>
+                    <div class="colunaTituloGrid c3">Telefone</div>
+                    <div class="colunaTituloGrid c4">Endereço</div>
+                    <div class="colunaTituloGrid c5">E-mail</div>
+                </div>
+                <div id="dadosGrid" class="dadosGrid">
+                    <div class="linhaGrid" th:each="clt : ${clientes}">
+                        <div class="colunaLinhaGrid c1"><span th:text="${clt.id}"></span></div>
+                        <div class="colunaLinhaGrid c2"><span th:text="${clt.nome}"></span></div>
+                        <div class="colunaLinhaGrid c3"><span th:text="${clt.telefone}"></span></div>
+                        <div class="colunaLinhaGrid c4"><span th:text="${clt.endereco}"></div>
+                        <div class="colunaLinhaGrid c5"><span th:text="${clt.email}"></span></div>                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const btnPesquisar = document.getElementById("btn_pesq");
+                const tipoPesquisaId = document.getElementById("f_pesqId");
+                const tipoPesquisaNome = document.getElementById("f_pesqNome");
+                const inputPesquisa = document.getElementById("f_pesq");
+                const dadosGrid = document.getElementById("dadosGrid");
+
+                const buttonAdicionar = document.getElementById("button_adicionar");
+                const novoClienteDiv = document.getElementById("novoCliente");
+                
+                // Função para realizar a pesquisa no servidor
+                function realizarPesquisa() {
+                    const tipoPesquisa = tipoPesquisaId.checked ? "ID" : "Nome";
+                    const valorPesquisa = inputPesquisa.value.trim();
+
+                    // Enviar a solicitação AJAX para o servidor
+                    fetch(`/api/cliente/pesquisar?tipoPesquisa=${tipoPesquisa}&valorPesquisa=${valorPesquisa}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            
+                            dadosGrid.innerHTML = ""; // Limpar a tabela
+
+                            data.forEach(cliente => {
+                                const linha = document.createElement("div");
+                                linha.classList.add("linhaGrid");
+                                linha.innerHTML = `
+                                    <div class="colunaLinhaGrid c1">${cliente.id}</div>
+                                    <div class="colunaLinhaGrid c2">${cliente.nome}</div>
+                                    <div class="colunaLinhaGrid c3">${cliente.telefone}</div>
+                                    <div class="colunaLinhaGrid c4">${cliente.endereco}</div>
+                                    <div class="colunaLinhaGrid c5">${cliente.email}</div>
+                                    <div class="colunaLinhaGrid c5">${cliente.doc}</div>
+                                `;
+                                dadosGrid.appendChild(linha);
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Erro ao buscar produtos:", error);
+                        });
+                }
+
+                document.getElementById("btn_pesq").addEventListener("click", function () {
+                    document.getElementById("pesquisa").classList.remove("ocultarPopup");
+                });
+
+                document.getElementById("btn_pesquisar").addEventListener("click", function () {
+                    const filtro = document.getElementById("f_pesq").value.toLowerCase();
+                    // Feche o popup de pesquisa
+                    document.getElementById("pesquisa").classList.add("ocultarPopup");
+                    realizarPesquisa();
+                });
+
+                // Função para abrir a div "novoCliente"
+                function abrirNovoCliente() {
+                    novoClienteDiv.classList.remove("ocultarPopup");
+                }
+                
+                // Função para fechar a div "novoCliente"
+                function fecharNovoCliente() {
+                    novoClienteDiv.classList.add("ocultarPopup");
+                    window.location.reload();
+                }
+                
+                // Adicione um ouvinte de evento ao botão "Adicionar" para abrir a div
+                buttonAdicionar.addEventListener("click", abrirNovoCliente);
+        
+                // Adicione um ouvinte de evento à imagem "fechar.svg" para fechar a div
+                document.getElementById("btn_fecharPopup").addEventListener("click", fecharNovoCliente);
+        
+                // Adicione um ouvinte de evento ao botão "Cancelar" para fechar o popout
+                document.getElementById("btn_cancelarPopup").addEventListener("click", function (event) {
+                    fecharNovoCliente();
+                    event.preventDefault(); // Impede a submissão do formulário
+                });
+            });
+
+            document.getElementById("clienteForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const formData = new FormData(document.getElementById("clienteForm"));
+                const cliente = {
+                    nome: formData.get("nome"),
+                    telefone: formData.get("telefone"),
+                    endereco: formData.get("endereco"),
+                    email: formData.get("email"),
+                    cpfOrCNPJ: formData.get("doc"),
+                    preco: formData.get("preco")
+                };
+    
+                fetch("/api/cliente", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(cliente)
+                })
+                .then(response => response.text())
+                .then(message => {
+                    alert(message);
+                    if (message.includes("sucesso")) {
+                        document.getElementById("clienteForm").reset(); // Limpa o formulário caso todas as info forem preenchidas corretamente
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

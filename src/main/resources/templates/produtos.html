@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head> 
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clientes - BackOffice</title>
+        <link rel="stylesheet" type="text/css" href="estoque_geral.css">
+        <link rel="stylesheet" type="text/css" href="produtos.css">
+    </head>
+    <body>
+        <div id="topoJanela" class="topoJanela">
+            <div></div>
+            <div>Produtos</div>
+            <div>
+                <img src="imgs/lupa.svg" id="btn_pesq" title="Pesquisar produtos" class="btn_mainoper">
+                <!-- <img src="imgs/listarTudo.svg" id="btn_listarTudo" class="btn_mainoper"> -->
+                <img src="imgs/add.svg" id="button_adicionar" title="Cadastro de novo produto" class="btn_mainoper">
+            </div>
+        </div>
+
+        <div id="pesquisa" class="popup ocultarPopup"> 
+            <div class="janelaPopup">
+                <div class="tituloPopup">
+                    <div id="tituloPopupPesquisar">Pesquisar</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopupPesq">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+                        <label>Tipo da pesquisa</label>
+                        <div class="campoRadio">
+                            <input type="radio" id="f_pesqId" name="f_pesqTipo" checked>ID
+                        </div>
+                        <div class="campoRadio">
+                            <input type="radio" id="f_pesqNome" name="f_pesqTipo">Nome
+                        </div>
+                    </div> 
+                    <div class="campoForm">
+                        <input type="text" id="f_pesq" name="f_pesq">
+                    </div>
+                </div>
+                <div class="rodapePopup">
+                    <button id="btn_pesquisar" class="btn_comandoPopup">pesquisar</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="novoProduto" class="popup ocultarPopup">
+           <form class="janelaPopup" id="produtoForm" method="POST" action="/api/produtos">
+                <div class="tituloPopup">
+                    <div id="tituloPopup">Novo Produto</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopup">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+						<label>Nome Produto</label>
+						<input type="text" id="" name="nome">
+					</div>
+                    <div class="campoForm">
+                        <label>Preço Produto</label>
+                        <input type="number" id="f_codprod" name="preco">
+                    </div>
+                    <div class="campoForm">
+                        <label>Descrição Produto</label>
+                        <input type="text" id="f_descprod" name="descricao">
+                    </div>
+                    <div class="campoForm">
+						<label>Link Imagem Produto</label>
+						<input type="text" id="" name="imagemP">
+					</div>
+                    <div class="campoForm">
+                        <label>Quantidade Produto</label>
+                        <input type="number" min="0" value="1" id="f_qtdeprod" name="quantidade">
+                    </div>
+                    <div class="campoForm">
+                        <label>Tipo Produto</label>
+                        <input type="text" id="" name="tipoP">
+                    </div>                        
+                </div>
+                <div class="rodapePopup">
+                    <button type="submit" id="btn_gravarPopup" class="btn_comandoPopup">gravar</button>
+                    <button id="btn_cancelarPopup" class="btn_comandoPopup">cancelar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="movEstoque" class="popup ocultarPopup">
+            <div class="janelaPopup">
+                <div class="tituloPopup">
+                    <div id="tituloPopup">Movimentação de Estoque</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopupMov">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+                        <label>Código Produto</label>
+                        <input type="text" id="f_codprodmov" name="f_codprodmov" readonly>
+                    </div>
+                    <div class="campoForm">
+                        <label>Descrição</label>
+                        <input type="text" id="f_descprodmov" name="f_descprodmov" readonly>
+                    </div>    
+                    <div class="campoForm">
+                        <label>Quantidade</label>
+                        <input type="text" id="f_qtdeprodmov" name="f_qtdeprodmov" readonly>
+                    </div>  
+                    <div class="campoForm">
+                        <label>Quantidade a ser registrada</label>
+                        <input type="number" value="0" min="0" id="f_qtdeprodregmov" name="f_qtdeprodregmov">
+                    </div>                      
+                </div>
+                <div class="rodapePopup">
+                    <button id="btn_addqtde" class="btn_comandoPopup">Adicionar</button>
+                    <button id="btn_removeqtde" class="btn_comandoPopup">Remover</button>
+                    <button id="btn_gravarmov" class="btn_comandoPopup">Gravar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="areaGrid" class="areaGrid">
+            <div id="grid" class="grid">
+                <div id="tituloGrid" class="tituloGrid">
+                    <div class="colunaTituloGrid c1">ID</div>
+                    <div class="colunaTituloGrid c2">Nome</div>
+                    <div class="colunaTituloGrid c3">Tipo Produto</div>
+                    <div class="colunaTituloGrid c4">Quantidade</div>
+                    <div class="colunaTituloGrid c5">Preço</div>
+
+                </div>
+                <div id="dadosGrid" class="dadosGrid">
+                    <div class="linhaGrid" th th:each="prod : ${produtos}">
+                        <div class="colunaLinhaGrid c1"><span th:text="${prod.id}"></span></div>
+                        <div class="colunaLinhaGrid c2"><span th:text="${prod.nome}"></div>
+                        <div class="colunaLinhaGrid c3"><span th:text="${prod.tipoProduto}"></div>
+                        <div class="colunaLinhaGrid c4"><span th:text="${prod.quantidade}"></div>
+                        <div class="colunaLinhaGrid c5"><span th:text="${prod.preco}"></div>                 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const btnPesquisar = document.getElementById("btn_pesq");
+                const tipoPesquisaId = document.getElementById("f_pesqId");
+                const tipoPesquisaNome = document.getElementById("f_pesqNome");
+                const inputPesquisa = document.getElementById("f_pesq");
+                const dadosGrid = document.getElementById("dadosGrid");
+
+                const buttonAdicionar = document.getElementById("button_adicionar");
+                const novoProdutoDiv = document.getElementById("novoProduto");
+                
+                // Função para realizar a pesquisa no servidor
+                function realizarPesquisa() {
+                    const tipoPesquisa = tipoPesquisaId.checked ? "ID" : "Nome";
+                    const valorPesquisa = inputPesquisa.value.trim();
+
+                    // Enviar a solicitação AJAX para o servidor
+                    fetch(`/api/produtos/pesquisar?tipoPesquisa=${tipoPesquisa}&valorPesquisa=${valorPesquisa}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            
+                            dadosGrid.innerHTML = ""; // Limpar a tabela
+
+                            data.forEach(produto => {
+                                const linha = document.createElement("div");
+                                linha.classList.add("linhaGrid"); // Recriação da tabela após pesquisa
+                                linha.innerHTML = `
+                                    <div class="colunaLinhaGrid c1">${produto.id}</div>
+                                    <div class="colunaLinhaGrid c2">${produto.nome}</div>
+                                    <div class="colunaLinhaGrid c3">${produto.tipoProduto}</div>
+                                    <div class="colunaLinhaGrid c4">${produto.quantidade}</div>
+                                    <div class="colunaLinhaGrid c5">${produto.preco}</div>
+                                `;
+                                dadosGrid.appendChild(linha);
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Erro ao buscar produtos:", error);
+                        });
+                }
+
+                document.getElementById("btn_pesq").addEventListener("click", function () {
+                    document.getElementById("pesquisa").classList.remove("ocultarPopup");
+                });
+
+                document.getElementById("btn_pesquisar").addEventListener("click", function () {
+                    const filtro = document.getElementById("f_pesq").value.toLowerCase();
+                    // Feche o popup de pesquisa
+                    document.getElementById("pesquisa").classList.add("ocultarPopup");
+                    realizarPesquisa();
+                });
+                
+                // Função para abrir a div "novoProduto"
+                function abrirNovoProduto() {
+                    novoProdutoDiv.classList.remove("ocultarPopup");
+                }
+                
+                // Função para fechar a div "novoProduto"
+                function fecharNovoProduto() {
+                    novoProdutoDiv.classList.add("ocultarPopup");
+                    window.location.reload();
+                }
+                
+                // Adicione um ouvinte de evento ao botão "Adicionar" para abrir a div
+                buttonAdicionar.addEventListener("click", abrirNovoProduto);
+        
+                // Adicione um ouvinte de evento à imagem "fechar.svg" para fechar a div
+                document.getElementById("btn_fecharPopup").addEventListener("click", fecharNovoProduto);
+        
+                // Adicione um ouvinte de evento ao botão "Cancelar" para fechar o popout
+                document.getElementById("btn_cancelarPopup").addEventListener("click", function (event) {
+                    fecharNovoProduto();
+                    event.preventDefault(); // Impede a submissão do formulário
+                });
+            });
+                
+            document.getElementById("produtoForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const formData = new FormData(document.getElementById("produtoForm"));
+                const produto = {
+                    nome: formData.get("nome"),
+                    tipoProduto: formData.get("tipoP"),
+                    descricao: formData.get("descricao"),
+                    quantidade: formData.get("quantidade"),
+                    imagem: formData.get("imagemP"),
+                    preco: formData.get("preco")
+                };
+        
+                fetch("/api/produtos", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(produto)
+                })
+                .then(response => response.text())
+                .then(message => {
+                    alert(message);
+                    if (message.includes("sucesso")) {
+                        document.getElementById("produtoForm").reset(); // Limpa o formulário caso todas as info forem preenchidas corretamente
+                    }
+                });
+            });
+        </script>
+        
+
+    </body>
+</html>

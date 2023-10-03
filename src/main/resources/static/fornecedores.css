@@ -1,0 +1,43 @@
+body{
+    overflow: hidden !important;
+}
+.c1{
+    width: 200px;
+}
+.c2{
+    width: 400px;
+}
+.c3{
+    width: 200px;
+}
+.c4{
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+}
+.c5{
+    width: 200px;
+}
+.c6{
+    width: 200px;
+}
+.c1_lcf{
+    width: 100px;
+}
+.c2_lcf{
+    width: 400px;
+}
+.c3_lcf{
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+}
+.ocultarLinhaGrid{
+    display: none !important;
+}
+.img_foto{
+    width: 75px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+}

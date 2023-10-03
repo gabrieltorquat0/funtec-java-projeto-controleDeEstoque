@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fornecedores - BackOffice</title>
+        <link rel="stylesheet" type="text/css" href="estoque_geral.css">
+        <link rel="stylesheet" type="text/css" href="fornecedores.css">
+    </head>
+    <body>
+        <div id="telefonesContForn" class="popup ocultarPopup">
+            <div class="janelaPopup">
+                <div class="tituloPopup">
+                    <div id="tituloPopupPesquisar">Telefones do Fornecedor</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopupTelefonesContForn">
+                </div>
+                <div class="corpoPopup">
+                    <div id="grid_telefonesContForn" class="areaGrid">
+                        <div class="grid">
+                            <div class="tituloGrid">
+                                <div class="colunaTituloGrid c2_lcf">Telefone</div>
+                            </div>
+                            <div id="dadosGrid_telefonesContForn" class="dadosGrid">
+                                <!--
+                                <div class="linhaGrid">
+                                    <div class="colunaLinhaGrid c2_lcf">Telefone</div>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rodapePopup">
+                </div>
+            </div>
+        </div>
+        
+        <div id="listaContatosForn" class="popup ocultarPopup">
+            <div class="janelaPopup">
+                <div class="tituloPopup">
+                    <div id="tituloPopupPesquisar">Lista de Contatos</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopupListaContatos">
+                </div>
+                <div class="corpoPopup">
+                    <div id="grid_novosContatosForn" class="areaGrid">
+                        <div class="grid">
+                            <div class="tituloGrid">
+                                <div class="colunaTituloGrid c1_lcf">ID</div>
+                                <div class="colunaTituloGrid c2_lcf">Nome</div>
+                                <div class="colunaTituloGrid c3_lcf">Operações</div>
+                            </div>
+                            <div id="dadosGrid_novosContatosForn" class="dadosGrid">
+                                <!--
+                                <div class="linhaGrid">
+                                    <div class="colunaLinhaGrid c1_lcf">ID</div>
+                                    <div class="colunaLinhaGrid c2_lcf">Nome</div>
+                                    <div class="colunaLinhaGrid c3_lcf">Operações</div>                    
+                                </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rodapePopup">
+                    <button id="btn_criarNovoContatoForn" class="btn_comandoPopup">Criar Novo Contato</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="topoJanela" class="topoJanela">
+            <div></div>
+            <div>Fornecedores</div>
+            <div>
+                <img src="imgs/lupa.svg" id="btn_pesq" class="btn_mainoper">
+                <!-- <img src="imgs/listarTudo.svg" id="btn_listarTudo" class="btn_mainoper"> -->
+                <img src="imgs/add.svg" id="button_adicionar" title="Cadastro de novo fornecedor" class="btn_mainoper">         
+            </div>
+        </div>
+
+        <div id="pesquisa" class="popup ocultarPopup"> 
+            <div class="janelaPopup">
+                <div class="tituloPopup">
+                    <div id="tituloPopupPesquisar">Pesquisar</div>
+                    <img src="../../imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopupPesq">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+                        <label>Tipo da pesquisa</label>
+                        <div class="campoRadio">
+                            <input type="radio" id="f_pesqId" name="f_pesqTipo" checked>ID
+                        </div>
+                        <div class="campoRadio">
+                            <input type="radio" id="f_pesqNome" name="f_pesqTipo">Nome
+                        </div>
+                    </div> 
+                    <div class="campoForm">
+                        <input type="text" id="f_pesq" name="f_pesq">
+                    </div>
+                </div>
+                <div class="rodapePopup">
+                    <button id="btn_pesquisar" class="btn_comandoPopup">pesquisar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="novoFornecedor" class="popup ocultarPopup">
+            <form class="janelaPopup" id="fornecedorForm" method="POST" action="/api/fornecedores">
+                <div class="tituloPopup">
+                    <div id="tituloPopup">Novo Fornecedor</div>
+                    <img src="imgs/fechar.svg" class="btn_janelaopera" id="btn_fecharPopup">
+                </div>
+                <div class="corpoPopup">
+                    <div class="campoForm">
+                        <label>Nome Fornecedor</label>
+                        <input type="text" id="f_nome" name="nome">
+                    </div>  
+                    <div class="campoForm">
+                        <label>CNPJ Fornecedor</label>
+                        <input type="text" id="" name="cnpj">
+                    </div>  
+                    <div class="campoForm">
+                        <label>Endereço Fornecedor</label>
+                        <input type="text" id="" name="endereco">
+                    </div>  
+                    <div class="campoForm">
+                        <label>Telefone Fornecedor</label>
+                        <input type="text" id="" name="telefone">
+                    </div>  
+                    <div class="campoForm">
+                        <label>Email Fornecedor</label>
+                        <input type="email" id="" name="email">
+                    </div>  
+                </div>
+                <div class="rodapePopup">
+                    <button type="submit" id="btn_gravarPopup" class="btn_comandoPopup">gravar</button>
+                    <button id="btn_cancelarPopup" class="btn_comandoPopup">cancelar</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="areaGrid" class="areaGrid">
+            <div id="grid" class="grid">
+                <div id="tituloGrid" class="tituloGrid">
+                    <div class="colunaTituloGrid c1">ID</div>
+                    <div class="colunaTituloGrid c2">Nome</div>
+                    <div class="colunaTituloGrid c3">CNPJ</div>
+                    <div class="colunaTituloGrid c4">Endereço</div>
+                    <div class="colunaTituloGrid c5">Telefone</div>
+                    <div class="colunaTituloGrid c6">E-mail</div>
+                </div>
+                <div id="dadosGrid" class="dadosGrid">
+                    <div class="linhaGrid" th:each="forn : ${fornecedores}">
+                        <div class="colunaLinhaGrid c1"><span th:text="${forn.id}"></span></div>
+                        <div class="colunaLinhaGrid c2"><span th:text="${forn.nome}"></span></div>
+                        <div class="colunaLinhaGrid c3"><span th:text="${forn.cnpj}"></div>
+                        <div class="colunaLinhaGrid c4"><span th:text="${forn.endereco}"></div>
+                        <div class="colunaLinhaGrid c5"><span th:text="${forn.telefone}"></span></div>  
+                        <div class="colunaLinhaGrid c6"><span th:text="${forn.email}"></span></div>                  
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const btnPesquisar = document.getElementById("btn_pesq");
+                const tipoPesquisaId = document.getElementById("f_pesqId");
+                const tipoPesquisaNome = document.getElementById("f_pesqNome");
+                const inputPesquisa = document.getElementById("f_pesq");
+                const dadosGrid = document.getElementById("dadosGrid");
+
+                const buttonAdicionar = document.getElementById("button_adicionar");
+                const novoFornecedorDiv = document.getElementById("novoFornecedor");
+                
+                // Função para realizar a pesquisa no servidor
+                function realizarPesquisa() {
+                    const tipoPesquisa = tipoPesquisaId.checked ? "ID" : "Nome";
+                    const valorPesquisa = inputPesquisa.value.trim();
+
+                    // Enviar a solicitação AJAX para o servidor
+                    fetch(`/api/fornecedores/pesquisar?tipoPesquisa=${tipoPesquisa}&valorPesquisa=${valorPesquisa}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            
+                            dadosGrid.innerHTML = ""; // Limpar a tabela
+
+                            data.forEach(fornecedor => {
+                                const linha = document.createElement("div");
+                                linha.classList.add("linhaGrid");
+                                linha.innerHTML = `
+                                    <div class="colunaLinhaGrid c1">${fornecedor.id}</div>
+                                    <div class="colunaLinhaGrid c2">${fornecedor.nome}</div>
+                                    <div class="colunaLinhaGrid c3">${fornecedor.cnpj}</div>
+                                    <div class="colunaLinhaGrid c4">${fornecedor.endereco}</div>
+                                    <div class="colunaLinhaGrid c5">${fornecedor.telefone}</div>
+                                    <div class="colunaLinhaGrid c5">${fornecedor.email}</div>
+                                `;
+                                dadosGrid.appendChild(linha);
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Erro ao buscar fornecedores:", error);
+                        });
+                }
+
+                document.getElementById("btn_pesq").addEventListener("click", function () {
+                    document.getElementById("pesquisa").classList.remove("ocultarPopup");
+                });
+
+                document.getElementById("btn_pesquisar").addEventListener("click", function () {
+                    const filtro = document.getElementById("f_pesq").value.toLowerCase();
+                    // Feche o popup de pesquisa
+                    document.getElementById("pesquisa").classList.add("ocultarPopup");
+                    realizarPesquisa();
+                });
+
+                // Função para abrir a div "novoFornecedor"
+                function abrirNovoFornecedor() {
+                    novoFornecedorDiv.classList.remove("ocultarPopup");
+                }
+                
+                // Função para fechar a div "novoFornecedor"
+                function fecharNovoFornecedor() {
+                    novoFornecedorDiv.classList.add("ocultarPopup");
+                    window.location.reload();
+                }
+                
+                // Adicione um ouvinte de evento ao botão "Adicionar" para abrir a div
+                buttonAdicionar.addEventListener("click", abrirNovoFornecedor);
+        
+                // Adicione um ouvinte de evento à imagem "fechar.svg" para fechar a div
+                document.getElementById("btn_fecharPopup").addEventListener("click", fecharNovoFornecedor);
+        
+                // Adicione um ouvinte de evento ao botão "Cancelar" para fechar o popout
+                document.getElementById("btn_cancelarPopup").addEventListener("click", function (event) {
+                    fecharNovoFornecedor();
+                    event.preventDefault(); // Impede a submissão do formulário
+                });
+            });
+                
+            document.getElementById("fornecedorForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const formData = new FormData(document.getElementById("fornecedorForm"));
+                const fornecedor = {
+                    nome: formData.get("nome"),
+                    cnpj: formData.get("cnpj"),
+                    endereco: formData.get("endereco"),
+                    telefone: formData.get("telefone"),
+                    email: formData.get("email")
+                };
+        
+                fetch("/api/fornecedores", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(fornecedor)
+                })
+                .then(response => response.text())
+                .then(message => {
+                    alert(message);
+                    if (message.includes("sucesso")) {
+                        document.getElementById("fornecedorForm").reset(); // Limpa o formulário caso todas as info forem preenchidas corretamente
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

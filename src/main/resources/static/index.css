@@ -1,0 +1,9 @@
+form {
+    width: 95%; /* Define a largura do form como 80% do contêiner pai */
+    margin: 0 auto; /* Centraliza o form na página */
+}
+
+form input[type="email"],
+form input[type="password"] {
+    width: 100%; /* Garante que os campos de entrada ocupem toda a largura do form */
+}
