@@ -190,7 +190,10 @@
                     document.getElementById("pesquisa").classList.add("ocultarPopup");
                     realizarPesquisa();
                 });
-                
+                document.getElementById("btn_fecharPopupPesq").addEventListener("click", function () {
+                    document.getElementById("pesquisa").classList.add("ocultarPopup");
+                });
+
                 // Função para abrir a div "novoProduto"
                 function abrirNovoProduto() {
                     novoProdutoDiv.classList.remove("ocultarPopup");

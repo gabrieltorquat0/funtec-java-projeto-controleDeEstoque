@@ -215,6 +215,10 @@
                     realizarPesquisa();
                 });
 
+                document.getElementById("btn_fecharPopupPesq").addEventListener("click", function () {
+                    document.getElementById("pesquisa").classList.add("ocultarPopup");
+                });
+
                 // Função para abrir a div "novoFornecedor"
                 function abrirNovoFornecedor() {
                     novoFornecedorDiv.classList.remove("ocultarPopup");

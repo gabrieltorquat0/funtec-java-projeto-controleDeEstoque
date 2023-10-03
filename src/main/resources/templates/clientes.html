@@ -163,6 +163,10 @@
                     realizarPesquisa();
                 });
 
+                document.getElementById("btn_fecharPopupPesq").addEventListener("click", function () {
+                    document.getElementById("pesquisa").classList.add("ocultarPopup");
+                });
+
                 // Função para abrir a div "novoCliente"
                 function abrirNovoCliente() {
                     novoClienteDiv.classList.remove("ocultarPopup");
