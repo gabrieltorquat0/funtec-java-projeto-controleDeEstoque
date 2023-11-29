@@ -60,14 +60,14 @@
                         <label>Preço Produto</label>
                         <input type="number" id="f_codprod" name="preco">
                     </div>
-                    <div class="campoForm">
-                        <label>Descrição Produto</label>
-                        <input type="text" id="f_descprod" name="descricao">
-                    </div>
-                    <div class="campoForm">
-						<label>Link Imagem Produto</label>
-						<input type="text" id="" name="imagemP">
-					</div>
+<!--                    <div class="campoForm">-->
+<!--                        <label>Descrição Produto</label>-->
+<!--                        <input type="text" id="f_descprod" name="descricao">-->
+<!--                    </div>-->
+<!--                    <div class="campoForm">-->
+<!--						<label>Link Imagem Produto</label>-->
+<!--						<input type="text" id="" name="imagemP">-->
+<!--					</div>-->
                     <div class="campoForm">
                         <label>Quantidade Produto</label>
                         <input type="number" min="0" value="1" id="f_qtdeprod" name="quantidade">
@@ -93,26 +93,29 @@
                 </div>
                 <div class="corpoPopup">
                     <div class="campoForm">
-                        <label>Código Produto</label>
+                        <label>ID Produto</label>
                         <input type="text" id="f_codprodmov" name="f_codprodmov" readonly>
                     </div>
                     <div class="campoForm">
-                        <label>Descrição</label>
-                        <input type="text" id="f_descprodmov" name="f_descprodmov" readonly>
-                    </div>    
+                        <label>Nome Produto</label>
+                        <input type="text" id="f_nomeprodmov" name="f_descprodmov">
+                    </div>
+                    <div class="campoForm">
+                        <label>Tipo Produto</label>
+                        <input type="text" id="f_tipoprodmov" name="f_tipoprodmov">
+                    </div>
                     <div class="campoForm">
                         <label>Quantidade</label>
-                        <input type="text" id="f_qtdeprodmov" name="f_qtdeprodmov" readonly>
-                    </div>  
+                        <input type="number" value="1" min="0" id="f_qtdeprodmov" name="f_qtdeprodmov">
+                    </div>
                     <div class="campoForm">
-                        <label>Quantidade a ser registrada</label>
-                        <input type="number" value="0" min="0" id="f_qtdeprodregmov" name="f_qtdeprodregmov">
-                    </div>                      
+                        <label>Preço</label>
+                        <input type="number" id="f_precoprodmov" name="f_precoprodmov">
+                    </div>
                 </div>
                 <div class="rodapePopup">
-                    <button id="btn_addqtde" class="btn_comandoPopup">Adicionar</button>
-                    <button id="btn_removeqtde" class="btn_comandoPopup">Remover</button>
                     <button id="btn_gravarmov" class="btn_comandoPopup">Gravar</button>
+                    <button id="btn_removeqtde" class="btn_comandoPopup">Remover</button>
                 </div>
             </div>
         </div>
@@ -149,8 +152,7 @@
 
                 const buttonAdicionar = document.getElementById("button_adicionar");
                 const novoProdutoDiv = document.getElementById("novoProduto");
-                
-                // Função para realizar a pesquisa no servidor
+
                 function realizarPesquisa() {
                     const tipoPesquisa = tipoPesquisaId.checked ? "ID" : "Nome";
                     const valorPesquisa = inputPesquisa.value.trim();
@@ -160,7 +162,7 @@
                         .then(response => response.json())
                         .then(data => {
                             
-                            dadosGrid.innerHTML = ""; // Limpar a tabela
+                            dadosGrid.innerHTML = "";
 
                             data.forEach(produto => {
                                 const linha = document.createElement("div");
@@ -186,7 +188,7 @@
 
                 document.getElementById("btn_pesquisar").addEventListener("click", function () {
                     const filtro = document.getElementById("f_pesq").value.toLowerCase();
-                    // Feche o popup de pesquisa
+
                     document.getElementById("pesquisa").classList.add("ocultarPopup");
                     realizarPesquisa();
                 });
@@ -194,12 +196,10 @@
                     document.getElementById("pesquisa").classList.add("ocultarPopup");
                 });
 
-                // Função para abrir a div "novoProduto"
                 function abrirNovoProduto() {
                     novoProdutoDiv.classList.remove("ocultarPopup");
                 }
-                
-                // Função para fechar a div "novoProduto"
+
                 function fecharNovoProduto() {
                     novoProdutoDiv.classList.add("ocultarPopup");
                     window.location.reload();
@@ -245,6 +245,98 @@
                     }
                 });
             });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const linhasGrid = document.querySelectorAll('.linhaGrid');
+
+                linhasGrid.forEach(linha => {
+                    linha.addEventListener('click', () => {
+                        const idProduto = linha.querySelector('.colunaLinhaGrid.c1').innerText;
+                        const nomeProduto = linha.querySelector('.colunaLinhaGrid.c2').innerText;
+                        const tipoProduto = linha.querySelector('.colunaLinhaGrid.c3').innerText;
+                        const quantidadeProduto = linha.querySelector('.colunaLinhaGrid.c4').innerText;
+                        const precoProduto = linha.querySelector('.colunaLinhaGrid.c5').innerText;
+
+                        document.getElementById('f_codprodmov').value = idProduto;
+                        document.getElementById('f_nomeprodmov').value = nomeProduto;
+                        document.getElementById('f_tipoprodmov').value = tipoProduto;
+                        document.getElementById('f_qtdeprodmov').value = quantidadeProduto;
+                        document.getElementById('f_precoprodmov').value = precoProduto;
+
+                        const divMovEstoque = document.getElementById('movEstoque');
+                        divMovEstoque.classList.remove("ocultarPopup");
+                    });
+                });
+
+                document.querySelectorAll('.linhaGrid').forEach(linha => {
+                    linha.addEventLitener('click', () => {
+                        const divMovEstoque = document.getElementById('movEstoque');
+                        divMovEstoque.classList.remove("ocultarPopup");
+                    });
+                });
+
+                document.getElementById("btn_gravarmov").addEventListener("click", function () {
+                    const idProduto = document.getElementById("f_codprodmov").value;
+                    const nomeProduto = document.getElementById("f_nomeprodmov").value;
+                    const tipoProduto = document.getElementById("f_tipoprodmov").value;
+                    const quantidadeProduto = document.getElementById("f_qtdeprodmov").value;
+                    const precoProduto = document.getElementById("f_precoprodmov").value;
+
+                    const originalNomeProduto = document.getElementById("f_nomeprodmov").dataset.originalValue;
+                    const originalTipoProduto = document.getElementById("f_tipoprodmov").dataset.originalValue;
+                    const originalQuantidadeProduto = document.getElementById("f_qtdeprodmov").dataset.originalValue;
+                    const originalPrecoProduto = document.getElementById("f_precoprodmov").dataset.originalValue;
+
+                    const alteracoes = {
+                        nome: nomeProduto !== originalNomeProduto ? nomeProduto : undefined,
+                        tipoProduto: tipoProduto !== originalTipoProduto ? tipoProduto : undefined,
+                        quantidade: quantidadeProduto !== originalQuantidadeProduto ? quantidadeProduto : undefined,
+                        preco: precoProduto !== originalPrecoProduto ? precoProduto : undefined
+                    };
+
+                    if (Object.values(alteracoes).some(value => value !== undefined)) {
+                        fetch(`/api/produtos/${idProduto}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(alteracoes)
+                        })
+                            .then(response => response.text())
+                            .then(message => {
+                                alert(message);
+                                // Aqui você pode adicionar lógica adicional se necessário
+                                // Por exemplo, recarregar a lista de produtos após a atualização
+                            })
+                            .catch(error => {
+                                console.error("Erro ao atualizar produto:", error);
+                            });
+                    } else {
+                        // Se não houve alterações, exibe uma mensagem ou realiza outra ação
+                        alert("Nenhuma alteração realizada no produto.");
+                    }
+                });
+
+                document.getElementById("btn_removeqtde").addEventListener("click", function () {
+                    const idProduto = document.getElementById("f_codprodmov").value;
+
+                    fetch(`/api/produtos/${idProduto}`, {
+                        method: "DELETE"
+                    })
+                        .then(response => response.text())
+                        .then(message => {
+                            alert(message);
+                            // Aqui você pode adicionar lógica adicional se necessário
+                            // Por exemplo, recarregar a lista de produtos após a exclusão
+                        })
+                        .catch(error => {
+                            console.error("Erro ao deletar produto:", error);
+                        });
+                });
+            });
+
+
+
         </script>
         
 

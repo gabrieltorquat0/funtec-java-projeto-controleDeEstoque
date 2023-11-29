@@ -30,8 +30,8 @@ public class Produto {
     @NotBlank(message = "O tipo de produto não pode estar em branco")
     private String tipoProduto;
 
-    @NotBlank(message = "A descrição não pode estar em branco")
-    private String descricao;
+//    @NotBlank(message = "A descrição não pode estar em branco")
+//    private String descricao;
 
     @NotNull(message = "A quantidade não pode estar em branco")
     private int quantidade;
